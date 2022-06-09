@@ -181,3 +181,16 @@ def latent_code_inspector_cVAE(cVAE,Sequences_input,Conditions_input,neurons=5):
   return min_Max_collection,mean_std_collection,latent_code
   
 
+def preprocess_interpolation_AE(AE,surrogate_model,scaler,latent_mean_std_collection,toughness,shear,interpolation=5):
+    latent_code = create_latentcode_AE(2,latent_mean_std_collection,latent_dim=5)
+
+    LATENT = torch.zeros(interpolation,latent_code.shape[1])
+    for i in range(interpolation):
+        LATENT[i] = latent_code[0]+(i+1)*(latent_code[1]-latent_code[0])
+
+    conds = create_target_ys(interpolation,toughness,shear)
+    conds = scaler.transform(conds)
+    conds = torch.from_numpy(conds).float()
+    Recipes = AE.decode(LATENT,conds)
+    Results = surrogate_model(Recipes)
+    return Recipes.detach().numpy(),Results.detach().numpy()

@@ -169,7 +169,7 @@ def sample_plot(Xt,dset,title = "default",size=1,interval = 1):
 
 def visilize_accuracy_GAN(real,fake,scaler):
     """Use for GAN to compare the difference"""
-    fig,axes = plt.subplots(10,1,figsize=(5,50),constrained_layout=True)
+    fig,axes = plt.subplots(1,10,figsize=(50,5),constrained_layout=True)
     fig.set_facecolor(colorformat["background"])
     fig.suptitle("WcGAN accuracy",color=colorformat["text"],fontsize=15)
     for i in range(10):

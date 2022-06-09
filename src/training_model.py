@@ -296,9 +296,12 @@ class WcGAN():
     def noise_sampler(self,N, z_dim):
         return np.random.normal(size=[N, z_dim]).astype('float32')
 
-    def train(self):
+    def train(self,num_iterations=int(3e4),batch_size = 520):
 
         sample_time = 0
+        self.num_iterations = num_iterations
+        self.batch_size = batch_size
+        self.log_interval = self.num_iterations/10
         for it in tqdm(range(self.num_iterations)):
             # d_infos = []
             for d_index in range(self.d_steps):
